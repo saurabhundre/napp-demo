@@ -1,0 +1,320 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>100 Ghante. Ek Mission. Selection | AIIMSonian</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+  <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <!-- Top header: profile | GO PRO | streak (hidden on non-Home pages) -->
+  <header class="header" id="mainHeader">
+    <div class="header-left">
+      <button type="button" class="status-ring-wrap" id="statusRingBtn" aria-label="View status">
+        <span class="status-ring">
+          <img src="images/profile.svg" alt="" class="avatar" />
+          <svg class="status-ring-border" viewBox="0 0 52 52" aria-hidden="true">
+            <circle cx="26" cy="26" r="24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-dasharray="22 8" />
+          </svg>
+        </span>
+      </button>
+      <div class="greeting">
+        <span class="greeting-time">Good Afternoon</span>
+        <span class="greeting-name">Priyanka</span>
+      </div>
+    </div>
+    <div class="header-right">
+    <div class="go-pro-wrap">
+      <div class="animated-border-box-glow"></div>
+      <div class="animated-border-box"></div>
+      <a href="#" class="btn-go-pro">
+        <img src="images/go-pro.svg" alt="" class="btn-go-pro-icon" />
+      </a>
+    </div>
+    <div class="streak">
+      <img src="images/streak.svg" alt="" class="streak-icon" />
+    </div>
+  </div>
+  </header>
+
+  <!-- Status viewer (stories-style full screen) -->
+  <div class="status-viewer" id="statusViewer" role="dialog" aria-modal="true" aria-label="Status" hidden>
+    <div class="status-viewer-inner">
+      <!-- Top bar: progress segments + close -->
+      <div class="status-progress-bar">
+        <span class="status-segment" data-segment="0"><span class="status-segment-fill"></span></span>
+        <span class="status-segment" data-segment="1"><span class="status-segment-fill"></span></span>
+        <span class="status-segment" data-segment="2"><span class="status-segment-fill"></span></span>
+      </div>
+      <button type="button" class="status-close" id="statusClose" aria-label="Close">
+        <span class="material-symbols-outlined">close</span>
+      </button>
+
+      <!-- Slides (tap right = next, left = prev) -->
+      <div class="status-slides" id="statusSlides">
+        <div class="status-slide status-slide--active" data-slide="0">
+          <p class="status-title">100 Ghante.</p>
+          <p class="status-title">Ek Mission.</p>
+          <p class="status-title">Selection</p>
+          <div class="status-badge">
+            <img src="images/slide-01.svg" alt="" class="status-medal" />
+            <span class="status-badge-text">RAPID REVISION</span>
+          </div>
+          <p class="status-sub">Complete Syllabus</p>
+          <a href="#" class="status-cta"><span class="material-symbols-outlined status-cta-icon">help</span> View All Question Bank</a>
+        </div>
+        <div class="status-slide" data-slide="1">
+          <p class="status-title">Daily Target</p>
+          <p class="status-sub">Stay on track every day</p>
+          <a href="#" class="status-cta">View Targets</a>
+        </div>
+        <div class="status-slide" data-slide="2">
+          <p class="status-title">QBank & Mocks</p>
+          <p class="status-sub">Lakhs of practice questions</p>
+          <a href="#" class="status-cta">Start Practice</a>
+        </div>
+      </div>
+
+      <!-- Tap zones: left = prev, right = next -->
+      <button type="button" class="status-tap-zone status-tap-prev" id="statusTapPrev" aria-label="Previous"></button>
+      <button type="button" class="status-tap-zone status-tap-next" id="statusTapNext" aria-label="Next"></button>
+    </div>
+  </div>
+
+  <main class="main">
+    <!-- Home view -->
+    <div class="view view--active" data-view="home" id="viewHome">
+    <!-- Hero slider -->
+    <section class="hero-wrap">
+      <div class="hero-slider">
+        <div class="hero-viewport">
+          <div class="hero-track" id="heroTrack">
+            <article class="hero-card">
+              <img src="images/slide-01.svg" alt="" class="hero-slide-img" />
+            </article>
+            <article class="hero-card">
+              <img src="images/slide-02.svg" alt="" class="hero-slide-img" />
+            </article>
+            <article class="hero-card">
+              <img src="images/slide-01.svg" alt="" class="hero-slide-img" />
+            </article>
+          </div>
+        </div>
+      </div>
+      <div class="hero-dots" id="heroDots" aria-label="Slider pagination"></div>
+    </section>
+
+    <!-- Daily Target -->
+    <section class="section">
+      <h2 class="section-head">
+        <span>Daily Target <span class="section-head-exam" id="dailyTargetExamLabel"></span></span>
+        <button type="button" class="btn-edit" id="dailyTargetEditBtn" aria-label="Edit daily target">
+          <img src="images/edit.svg" alt="" />
+        </button>
+      </h2>
+      <div class="target-list" id="dailyTargetList"></div>
+    </section>
+
+    <!-- Daily Target edit bottom sheet -->
+    <div class="bottom-sheet" id="dailyTargetSheet" aria-hidden="true">
+      <div class="bottom-sheet-backdrop" id="dailyTargetSheetBackdrop"></div>
+      <div class="bottom-sheet-panel">
+        <div class="bottom-sheet-handle" aria-hidden="true"></div>
+        <div class="bottom-sheet-header">
+          <h3 class="bottom-sheet-title">Edit Daily Target</h3>
+          <button type="button" class="bottom-sheet-close" id="dailyTargetSheetClose" aria-label="Close">
+            <span class="material-symbols-outlined">close</span>
+          </button>
+        </div>
+        <div class="bottom-sheet-body">
+          <div class="bottom-sheet-section bottom-sheet-section--exam">
+            <h4 class="bottom-sheet-subtitle">Select exam</h4>
+            <select class="bottom-sheet-select" id="dailyTargetExamSelect" aria-label="Select nursing exam">
+              <option value="">Choose your exam</option>
+              <option value="NORCET">NORCET (Nursing Officer Recruitment Common Eligibility Test)</option>
+              <option value="AIIMS-NORCET">AIIMS NORCET</option>
+              <option value="PGIMER-Nursing">PGIMER Nursing Officer</option>
+              <option value="DSSSB-Nursing">DSSSB Nursing</option>
+              <option value="ESIC-Nursing">ESIC Nursing Officer</option>
+              <option value="RRB-Nursing">RRB Nursing (Railway)</option>
+              <option value="UPSC-Nursing">UPSC Nursing Officer</option>
+              <option value="State-NORCET">State NORCET / State Nursing</option>
+              <option value="BSc-Nursing">B.Sc Nursing Entrance</option>
+              <option value="MSc-Nursing">M.Sc Nursing Entrance</option>
+              <option value="GNM">GNM (General Nursing & Midwifery)</option>
+              <option value="ANM">ANM (Auxiliary Nursing Midwifery)</option>
+            </select>
+          </div>
+          <p class="bottom-sheet-hint">Remove items you don’t need. Add more from the list below.</p>
+          <div class="bottom-sheet-section">
+            <h4 class="bottom-sheet-subtitle">Your targets</h4>
+            <ul class="bottom-sheet-list" id="dailyTargetSheetList"></ul>
+          </div>
+          <div class="bottom-sheet-section">
+            <h4 class="bottom-sheet-subtitle">Add target</h4>
+            <ul class="bottom-sheet-list bottom-sheet-list--add" id="dailyTargetSheetAddList"></ul>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Keep Learning (2x2 grid) -->
+    <section class="section">
+      <h2 class="section-head">Keep Learning</h2>
+      <div class="learn-grid">
+        <a href="#" class="learn-card">
+          <h3>Lessons</h3>
+          <span class="learn-action" aria-hidden="true"><img src="images/arrow-right.svg" alt="" /></span>
+          <p class="learn-desc">Understand one concept</p>
+          
+          <div class="learn-illus"><img src="images/video-thumb.png" alt="" /></div>
+        </a>
+        <a href="#" class="learn-card">
+          <h3>QBank</h3>
+          <span class="learn-action" aria-hidden="true"><img src="images/arrow-right.svg" alt="" /></span>
+          <p class="learn-desc">Lakhs of practice questions.</p>
+          
+          <div class="learn-illus"><img src="images/qbank-thumb.png" alt="" /></div>
+        </a>
+        <a href="#" class="learn-card">
+          <h3>Mock Test</h3>
+          <span class="learn-action" aria-hidden="true"><img src="images/arrow-right.svg" alt="" /></span>
+          <p class="learn-desc">Lakhs of practice questions.</p>
+          
+          <div class="learn-illus"><img src="images/mocktest-thumb.png" alt="" /></div>
+        </a>
+        <a href="#" class="learn-card">
+          <h3>Library</h3>
+          <span class="learn-action" aria-hidden="true"><img src="images/arrow-right.svg" alt="" /></span>
+          <p class="learn-desc">Lakhs of practice questions.</p>
+          
+          <div class="learn-illus"><img src="images/pdf-thumb.png" alt="" /></div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Trusted by -->
+    <section class="trust-bar">
+      <img src="images/social.svg">
+    </section>
+
+    <!-- Quick Access -->
+    <section class="section">
+      <h2 class="section-head">Quick Access</h2>
+      <div class="quick-list">
+        <a href="#" class="target-card">
+          <span class="target-icon target-icon--img"><img src="images/pyqs.svg" alt="" /></span>
+          <div class="target-body">
+            <h3>NORCET PYQ's</h3>
+            <p>2015-2021</p>
+          </div>
+          <img src="images/arrow-right.svg" alt="">
+        </a>
+        <a href="#" class="target-card">
+          <span class="target-icon target-icon--img"><img src="images/preboard.svg" alt="" /></span>
+          <div class="target-body">
+            <h3>Pedia NORCET Pre-Board</h3>
+            <p>Starts at 21 March</p>
+          </div>
+          <img src="images/arrow-right.svg" alt="">
+        </a>
+      </div>
+    </section>
+
+    <!-- Branding -->
+    <section class="branding">
+      <p class="branding-tagline">Exam Crack Karana Easy He!</p>
+      <p class="branding-credit">Made with <i class="ri-heart-fill" aria-hidden="true"></i> by AIIMSonians</p>
+    </section>
+    </div>
+
+    <!-- Videos view (Video Lectures page: title + search, featured card, Browse Subjects) -->
+    <div class="view" data-view="videos" id="viewVideos" hidden>
+      <div class="video-page">
+        <!-- Step 1: Subject listing (like mockup) -->
+        <div class="video-step video-step--subjects" id="videoStepSubjects">
+          <header class="video-lectures-header">
+            <button type="button" class="video-lectures-back" id="videoLecturesBackBtn" aria-label="Back to Home">
+              <span class="material-symbols-outlined">arrow_back</span>
+            </button>
+            <h1 class="video-lectures-title">Video Lectures</h1>
+            <button type="button" class="video-lectures-search" id="videoSearchBtn" aria-label="Search">
+              <span class="material-symbols-outlined">search</span>
+            </button>
+          </header>
+          <a href="#" class="video-featured-card" id="videoFeaturedCard">
+            <div class="video-featured-logo">
+              <img src="images/rapid-revision.png" alt="" class="video-featured-logo-img" />
+              <span class="video-featured-logo-text">RAPID REVISION</span>
+            </div>
+            <div class="video-featured-body">
+              <strong class="video-featured-title">Rapid Revision 2.0</strong>
+              <p class="video-featured-sub">100 Ghante. Ek Mission. Selection</p>
+            </div>
+            <span class="video-featured-arrow"><span class="material-symbols-outlined">chevron_right</span></span>
+          </a>
+          <h2 class="browse-subjects-title">Browse Subjects</h2>
+          <div class="subject-list" id="subjectList"></div>
+        </div>
+
+        <!-- Step 2: Video listing (after subject chosen) -->
+        <div class="video-step video-step--videos" id="videoStepVideos" hidden>
+          <div class="video-listing-top">
+            <button type="button" class="video-back" id="videoBackBtn" aria-label="Back to subjects">
+              <span class="material-symbols-outlined">arrow_back</span>
+              <span id="videoBackLabel">Back</span>
+            </button>
+            <span class="video-count-near-back" id="videoCountNearBack" aria-live="polite"></span>
+          </div>
+          <h1 class="video-listing-heading" id="videoListingHeading"></h1>
+          <p class="video-list-summary" id="videoSummary"></p>
+          <div class="video-teacher-card" id="videoTeacherCard" hidden>
+            <img src="" alt="" class="video-teacher-card-avatar" id="videoTeacherCardAvatar" />
+            <div class="video-teacher-card-body">
+              <p class="video-teacher-card-name" id="videoTeacherCardName"></p>
+              <p class="video-teacher-card-tagline" id="videoTeacherCardTagline"></p>
+              <p class="video-teacher-card-tagline video-teacher-card-tagline--second" id="videoTeacherCardTagline2"></p>
+            </div>
+            <span class="video-teacher-card-arrow"><span class="material-symbols-outlined">chevron_right</span></span>
+          </div>
+          <div class="video-lecture-list" id="videoList"></div>
+        </div>
+      </div>
+    </div>
+  </main>
+
+  <!-- Bottom navigation (Material 3 style with sliding pill) -->
+  <nav class="bottom-nav" aria-label="Main" id="bottomNav" style="--active-index: 0">
+    <span class="nav-pill" aria-hidden="true">
+      <small class=""></small>
+    </span>
+    <a href="#" class="bottom-nav-item active" data-nav-index="0">
+      <span class="material-symbols-outlined nav-icon" aria-hidden="true">home</span>
+      <span class="nav-label">Home</span>
+    </a>
+    <a href="#" class="bottom-nav-item" data-nav-index="1">
+      <span class="material-symbols-outlined nav-icon" aria-hidden="true">menu_book</span>
+      <span class="nav-label">Qbank</span>
+    </a>
+    <a href="#" class="bottom-nav-item" data-nav-index="2">
+      <span class="material-symbols-outlined nav-icon" aria-hidden="true">play_circle</span>
+      <span class="nav-label">Videos</span>
+    </a>
+    <a href="#" class="bottom-nav-item" data-nav-index="3">
+      <span class="material-symbols-outlined nav-icon" aria-hidden="true">assignment</span>
+      <span class="nav-label">Tests</span>
+    </a>
+    <a href="#" class="bottom-nav-item" data-nav-index="4">
+      <span class="material-symbols-outlined nav-icon" aria-hidden="true">apps</span>
+      <span class="nav-label">More</span>
+    </a>
+  </nav>
+
+  <script src="script.js"></script>
+</body>
+</html>
