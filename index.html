@@ -7,7 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,300,0,0" rel="stylesheet" />
   <link href="https://cdn.jsdelivr.net/npm/remixicon@3.5.0/fonts/remixicon.css" rel="stylesheet" />
   <link rel="stylesheet" href="styles.css" />
 </head>
@@ -41,6 +41,24 @@
     </div>
   </div>
   </header>
+
+  <!-- First-time reels overlay (full-screen, 10 posts, one-time only) -->
+  <div class="reels-overlay" id="reelsOverlay" aria-hidden="true" hidden>
+    <div class="reels-top-bar">
+      <button type="button" class="reels-btn reels-back" id="reelsBackBtn" aria-label="Close reels">
+        <span class="material-symbols-outlined">arrow_back</span>
+      </button>
+      <button type="button" class="reels-btn reels-mute" id="reelsMuteBtn" aria-label="Toggle sound">
+        <span class="material-symbols-outlined">volume_off</span>
+      </button>
+    </div>
+    <div class="reels-track-wrap" id="reelsTrackWrap">
+      <div class="reels-track" id="reelsTrack"></div>
+    </div>
+    <div class="reels-progress-bar" id="reelsProgressBar" aria-hidden="true">
+      <div class="reels-progress-segments" id="reelsProgressSegments"></div>
+    </div>
+  </div>
 
   <!-- Status viewer (stories-style full screen) -->
   <div class="status-viewer" id="statusViewer" role="dialog" aria-modal="true" aria-label="Status" hidden>
@@ -262,17 +280,24 @@
           <div class="subject-list" id="subjectList"></div>
         </div>
 
-        <!-- Step 2: Video listing (after subject chosen) -->
+        <!-- Step 2: Video lecture details (after subject chosen) -->
         <div class="video-step video-step--videos" id="videoStepVideos" hidden>
-          <div class="video-listing-top">
+          <header class="video-details-header">
             <button type="button" class="video-back" id="videoBackBtn" aria-label="Back to subjects">
               <span class="material-symbols-outlined">arrow_back</span>
-              <span id="videoBackLabel">Back</span>
             </button>
-            <span class="video-count-near-back" id="videoCountNearBack" aria-live="polite"></span>
+            <h1 class="video-details-title" id="videoListingHeading"></h1>
+            <button type="button" class="video-details-menu" id="videoDetailsMenuBtn" aria-label="Menu">
+              <span class="material-symbols-outlined">menu</span>
+            </button>
+          </header>
+          <div class="video-filter-tabs" role="tablist" aria-label="Filter videos">
+            <button type="button" class="video-filter-tab active" data-video-filter="all" role="tab" aria-selected="true">All</button>
+            <button type="button" class="video-filter-tab" data-video-filter="free" role="tab" aria-selected="false">Free</button>
+            <button type="button" class="video-filter-tab" data-video-filter="paused" role="tab" aria-selected="false">Paused</button>
+            <button type="button" class="video-filter-tab" data-video-filter="completed" role="tab" aria-selected="false">Completed</button>
+            <button type="button" class="video-filter-tab" data-video-filter="unattended" role="tab" aria-selected="false">Unattended</button>
           </div>
-          <h1 class="video-listing-heading" id="videoListingHeading"></h1>
-          <p class="video-list-summary" id="videoSummary"></p>
           <div class="video-teacher-card" id="videoTeacherCard" hidden>
             <img src="" alt="" class="video-teacher-card-avatar" id="videoTeacherCardAvatar" />
             <div class="video-teacher-card-body">
@@ -286,7 +311,489 @@
         </div>
       </div>
     </div>
+
+    <!-- Test view (PYQ, Subject, Daily, Mini, Pre Board tabs + live/past tests) -->
+    <div class="view" data-view="tests" id="viewTests" hidden>
+      <div class="test-page">
+        <header class="test-header">
+          <button type="button" class="test-back" id="testBackBtn" aria-label="Back to Home">
+            <span class="material-symbols-outlined">arrow_back</span>
+          </button>
+          <h1 class="test-title">Test</h1>
+          <button type="button" class="video-lectures-search" id="TestSearchBtn" aria-label="Search">
+            <span class="material-symbols-outlined">search</span>
+          </button>
+        </header>
+
+        <div class="test-tabs-wrap" role="tablist" aria-label="Test types">
+          <div class="test-tabs" id="testTabs">
+            <button type="button" class="test-tab active" data-test-tab="pyq" role="tab" aria-selected="true">
+              <span class="test-tab-icon"><img src="images/pyqs.svg" alt="" /></span>
+              <span class="test-tab-label">PYQ Test</span>
+            </button>
+            <button type="button" class="test-tab" data-test-tab="subject" role="tab" aria-selected="false">
+              <span class="test-tab-icon test-tab-icon--symbol"><span class="material-symbols-outlined">menu_book</span></span>
+              <span class="test-tab-label">Subject Test</span>
+            </button>
+            <button type="button" class="test-tab" data-test-tab="daily" role="tab" aria-selected="false">
+              <span class="test-tab-icon"><img src="images/daily-test.svg" alt="" /></span>
+              <span class="test-tab-label">Daily Test</span>
+            </button>
+            <button type="button" class="test-tab" data-test-tab="mini" role="tab" aria-selected="false">
+              <span class="test-tab-icon"><img src="images/mini-test.svg" alt="" /></span>
+              <span class="test-tab-label">Mini Test</span>
+            </button>
+            <button type="button" class="test-tab" data-test-tab="preboard" role="tab" aria-selected="false">
+              <span class="test-tab-icon"><img src="images/preboard.svg" alt="" /></span>
+              <span class="test-tab-label">Pre Board</span>
+            </button>
+          </div>
+        </div>
+
+        <h2 class="section-head test-exam-head" id="testExamHead">
+          <span>Exams <span class="section-head-exam" id="testExamLabel">AIIMS NORCET</span></span>
+          <button type="button" class="btn-edit" id="testExamEditBtn" aria-label="Edit exam">
+            <img src="images/edit.svg" alt="" />
+          </button>
+        </h2>
+
+        <!-- Daily Test content (live card + promo + past tests) -->
+        <div class="test-content-panel test-content-panel--hidden" id="testContentDaily">
+        <section class="test-live-card">
+          <div class="card-body">
+          <div class="test-live-date">
+            <span class="test-live-day">13</span>
+            <span class="test-live-month">March</span>
+          </div>
+          <div class="">
+          <div class="test-live-head">
+            <h2 class="test-live-title">NORCET Daily Test</h2>
+            <span class="target-tag target-tag--live">LIVE</span>
+          </div>
+          <p class="test-live-specs">80 MCQs • 80 Mins • 100 Marks</p>
+        </div>
+        </div>
+          <div class="test-live-body">
+            <div class="test-live-divider" aria-hidden="true"></div>
+            <div class="test-live-footer">
+              <div class="test-live-attempted">
+                <span class="test-live-avatars">
+                  <img src="images/profile.svg" alt="" /><img src="images/profile.svg" alt="" /><img src="images/profile.svg" alt="" />
+                </span>
+                <span>467 Attempted today</span>
+              </div>
+              <a href="#" class="btn-test-attempt">Attempt</a>
+            </div>
+          </div>
+        </section>
+
+        <div class="test-promo">
+          <span class="test-promo-icon-wrap"><span class="test-promo-icon material-symbols-outlined">lightbulb</span></span>
+          <p class="test-promo-text"><strong class="test-promo-bold">18,500+</strong> <strong class="test-promo-bold">students</strong> say daily tests help them strengthen topic-wise understanding.</p>
+        </div>
+
+        <section class="test-past">
+          <h2 class="test-past-head">Past Tests</h2>
+          <ul class="test-past-list" id="testPastList">
+            <li><a href="#" class="test-past-item">
+              <span class="test-past-date"><span class="test-past-day">12</span><span class="test-past-month">March</span></span>
+              <div class="test-past-body">
+                <span class="test-past-title">NORCET Daily Test</span>
+                <span class="test-past-specs">80 MCQs • 80 Mins • 100 Marks</span>
+              </div>
+              <span class="material-symbols-outlined test-past-arrow">chevron_right</span>
+            </a></li>
+            <li><a href="#" class="test-past-item">
+              <span class="test-past-date"><span class="test-past-day">11</span><span class="test-past-month">March</span></span>
+              <div class="test-past-body">
+                <span class="test-past-title">NORCET Daily Test</span>
+                <span class="test-past-specs">80 MCQs • 80 Mins • 100 Marks</span>
+              </div>
+              <span class="material-symbols-outlined test-past-arrow">chevron_right</span>
+            </a></li>
+            <li><a href="#" class="test-past-item">
+              <span class="test-past-date"><span class="test-past-day">10</span><span class="test-past-month">March</span></span>
+              <div class="test-past-body">
+                <span class="test-past-title">NORCET Daily Test</span>
+                <span class="test-past-specs">80 MCQs • 80 Mins • 100 Marks</span>
+              </div>
+              <span class="material-symbols-outlined test-past-arrow">chevron_right</span>
+            </a></li>
+            <li><a href="#" class="test-past-item">
+              <span class="test-past-date"><span class="test-past-day">09</span><span class="test-past-month">March</span></span>
+              <div class="test-past-body">
+                <span class="test-past-title">NORCET Daily Test</span>
+                <span class="test-past-specs">80 MCQs • 80 Mins • 100 Marks</span>
+              </div>
+              <span class="material-symbols-outlined test-past-arrow">chevron_right</span>
+            </a></li>
+          </ul>
+        </section>
+        </div>
+
+        <!-- PYQ Test content (year filters + test cards list) -->
+        <div class="test-content-panel" id="testContentPyq">
+          <div class="test-pyq-filters-wrap">
+            <div class="test-pyq-filters" role="tablist" aria-label="Filter by year">
+              <button type="button" class="test-pyq-filter active" data-pyq-year="all">All</button>
+              <button type="button" class="test-pyq-filter" data-pyq-year="2021-2025">2021-2025</button>
+              <button type="button" class="test-pyq-filter" data-pyq-year="2025">2025</button>
+              <button type="button" class="test-pyq-filter" data-pyq-year="2024">2024</button>
+              <button type="button" class="test-pyq-filter" data-pyq-year="2023">2023</button>
+            </div>
+          </div>
+          <ul class="test-pyq-list" id="testPyqList">
+            <li><a href="#" class="test-pyq-card">
+              <span class="test-pyq-icon"><span class="material-symbols-outlined">description</span></span>
+              <div class="test-pyq-body">
+                <span class="test-pyq-title">OBG NIRCET Pre-Board</span>
+                <span class="test-pyq-specs">80 MCQs • 80 Mins • 100 Marks</span>
+              </div>
+              <span class="test-pyq-year">2025</span>
+              <span class="material-symbols-outlined test-pyq-arrow">chevron_right</span>
+            </a></li>
+            <li><a href="#" class="test-pyq-card">
+              <span class="test-pyq-icon"><span class="material-symbols-outlined">description</span></span>
+              <div class="test-pyq-body">
+                <span class="test-pyq-title">NORCET 9 Prelims</span>
+                <span class="test-pyq-specs">80 MCQs • 80 Mins • 100 Marks</span>
+              </div>
+              <span class="test-pyq-year">2021</span>
+              <span class="material-symbols-outlined test-pyq-arrow">chevron_right</span>
+            </a></li>
+            <li><a href="#" class="test-pyq-card">
+              <span class="test-pyq-icon"><span class="material-symbols-outlined">description</span></span>
+              <div class="test-pyq-body">
+                <span class="test-pyq-title">NORCET 9 Mains</span>
+                <span class="test-pyq-specs">80 MCQs • 80 Mins • 100 Marks</span>
+              </div>
+              <span class="test-pyq-year">2021</span>
+              <span class="material-symbols-outlined test-pyq-arrow">chevron_right</span>
+            </a></li>
+            <li><a href="#" class="test-pyq-card">
+              <span class="test-pyq-icon"><span class="material-symbols-outlined">description</span></span>
+              <div class="test-pyq-body">
+                <span class="test-pyq-title">CHN NORCET Pre-Board</span>
+                <span class="test-pyq-specs">80 MCQs • 80 Mins • 100 Marks</span>
+              </div>
+              <span class="test-pyq-year">2020</span>
+              <span class="material-symbols-outlined test-pyq-arrow">chevron_right</span>
+            </a></li>
+          </ul>
+        </div>
+
+        <!-- Mini Test content (like Daily, no exam selection) -->
+        <div class="test-content-panel test-content-panel--hidden" id="testContentMini">
+          <section class="test-live-card">
+            <div class="card-body">
+              <div class="test-live-date">
+                <span class="test-live-day">13</span>
+                <span class="test-live-month">March</span>
+              </div>
+              <div class="">
+                <div class="test-live-head">
+                  <h2 class="test-live-title">Mini Test</h2>
+                  <span class="target-tag target-tag--live">LIVE</span>
+                </div>
+                <p class="test-live-specs">80 MCQs • 80 Mins • 100 Marks</p>
+              </div>
+            </div>
+            <div class="test-live-body">
+              <div class="test-live-divider" aria-hidden="true"></div>
+              <div class="test-live-footer">
+                <div class="test-live-attempted">
+                  <span class="test-live-avatars">
+                    <img src="images/profile.svg" alt="" /><img src="images/profile.svg" alt="" /><img src="images/profile.svg" alt="" />
+                  </span>
+                  <span>312 Attempted today</span>
+                </div>
+                <a href="#" class="btn-test-attempt">Attempt</a>
+              </div>
+            </div>
+          </section>
+          <div class="test-promo">
+            <span class="test-promo-icon-wrap"><span class="test-promo-icon material-symbols-outlined">lightbulb</span></span>
+            <p class="test-promo-text"><strong class="test-promo-bold">Mini tests</strong> help you revise quickly. <strong class="test-promo-bold">Try one now.</strong></p>
+          </div>
+          <section class="test-past">
+            <h2 class="test-past-head">Past Mini Tests</h2>
+            <ul class="test-past-list">
+              <li><a href="#" class="test-past-item">
+                <span class="test-past-date"><span class="test-past-day">12</span><span class="test-past-month">March</span></span>
+                <div class="test-past-body">
+                  <span class="test-past-title">Mini Test</span>
+                  <span class="test-past-specs">80 MCQs • 80 Mins • 100 Marks</span>
+                </div>
+                <span class="material-symbols-outlined test-past-arrow">chevron_right</span>
+              </a></li>
+              <li><a href="#" class="test-past-item">
+                <span class="test-past-date"><span class="test-past-day">11</span><span class="test-past-month">March</span></span>
+                <div class="test-past-body">
+                  <span class="test-past-title">Mini Test</span>
+                  <span class="test-past-specs">80 MCQs • 80 Mins • 100 Marks</span>
+                </div>
+                <span class="material-symbols-outlined test-past-arrow">chevron_right</span>
+              </a></li>
+              <li><a href="#" class="test-past-item">
+                <span class="test-past-date"><span class="test-past-day">10</span><span class="test-past-month">March</span></span>
+                <div class="test-past-body">
+                  <span class="test-past-title">Mini Test</span>
+                  <span class="test-past-specs">80 MCQs • 80 Mins • 100 Marks</span>
+                </div>
+                <span class="material-symbols-outlined test-past-arrow">chevron_right</span>
+              </a></li>
+              <li><a href="#" class="test-past-item">
+                <span class="test-past-date"><span class="test-past-day">09</span><span class="test-past-month">March</span></span>
+                <div class="test-past-body">
+                  <span class="test-past-title">Mini Test</span>
+                  <span class="test-past-specs">80 MCQs • 80 Mins • 100 Marks</span>
+                </div>
+                <span class="material-symbols-outlined test-past-arrow">chevron_right</span>
+              </a></li>
+              <li><a href="#" class="test-past-item">
+                <span class="test-past-date"><span class="test-past-day">08</span><span class="test-past-month">March</span></span>
+                <div class="test-past-body">
+                  <span class="test-past-title">Mini Test</span>
+                  <span class="test-past-specs">80 MCQs • 80 Mins • 100 Marks</span>
+                </div>
+                <span class="material-symbols-outlined test-past-arrow">chevron_right</span>
+              </a></li>
+              <li><a href="#" class="test-past-item">
+                <span class="test-past-date"><span class="test-past-day">07</span><span class="test-past-month">March</span></span>
+                <div class="test-past-body">
+                  <span class="test-past-title">Mini Test</span>
+                  <span class="test-past-specs">80 MCQs • 80 Mins • 100 Marks</span>
+                </div>
+                <span class="material-symbols-outlined test-past-arrow">chevron_right</span>
+              </a></li>
+              <li><a href="#" class="test-past-item">
+                <span class="test-past-date"><span class="test-past-day">06</span><span class="test-past-month">March</span></span>
+                <div class="test-past-body">
+                  <span class="test-past-title">Mini Test</span>
+                  <span class="test-past-specs">80 MCQs • 80 Mins • 100 Marks</span>
+                </div>
+                <span class="material-symbols-outlined test-past-arrow">chevron_right</span>
+              </a></li>
+              <li><a href="#" class="test-past-item">
+                <span class="test-past-date"><span class="test-past-day">05</span><span class="test-past-month">March</span></span>
+                <div class="test-past-body">
+                  <span class="test-past-title">Mini Test</span>
+                  <span class="test-past-specs">80 MCQs • 80 Mins • 100 Marks</span>
+                </div>
+                <span class="material-symbols-outlined test-past-arrow">chevron_right</span>
+              </a></li>
+              <li><a href="#" class="test-past-item">
+                <span class="test-past-date"><span class="test-past-day">04</span><span class="test-past-month">March</span></span>
+                <div class="test-past-body">
+                  <span class="test-past-title">Mini Test</span>
+                  <span class="test-past-specs">80 MCQs • 80 Mins • 100 Marks</span>
+                </div>
+                <span class="material-symbols-outlined test-past-arrow">chevron_right</span>
+              </a></li>
+              <li><a href="#" class="test-past-item">
+                <span class="test-past-date"><span class="test-past-day">03</span><span class="test-past-month">March</span></span>
+                <div class="test-past-body">
+                  <span class="test-past-title">Mini Test</span>
+                  <span class="test-past-specs">80 MCQs • 80 Mins • 100 Marks</span>
+                </div>
+                <span class="material-symbols-outlined test-past-arrow">chevron_right</span>
+              </a></li>
+              <li><a href="#" class="test-past-item">
+                <span class="test-past-date"><span class="test-past-day">02</span><span class="test-past-month">March</span></span>
+                <div class="test-past-body">
+                  <span class="test-past-title">Mini Test</span>
+                  <span class="test-past-specs">80 MCQs • 80 Mins • 100 Marks</span>
+                </div>
+                <span class="material-symbols-outlined test-past-arrow">chevron_right</span>
+              </a></li>
+              <li><a href="#" class="test-past-item">
+                <span class="test-past-date"><span class="test-past-day">01</span><span class="test-past-month">March</span></span>
+                <div class="test-past-body">
+                  <span class="test-past-title">Mini Test</span>
+                  <span class="test-past-specs">80 MCQs • 80 Mins • 100 Marks</span>
+                </div>
+                <span class="material-symbols-outlined test-past-arrow">chevron_right</span>
+              </a></li>
+            </ul>
+          </section>
+        </div>
+
+        <!-- Subject Test content (subject-wise listing) -->
+        <div class="test-content-panel test-content-panel--hidden" id="testContentSubject">
+          <h2 class="test-subject-head">Choose Subject</h2>
+          <ul class="test-subject-list" id="testSubjectList">
+            <li><a href="#" class="test-subject-item">
+              <span class="test-subject-icon"><span class="material-symbols-outlined">menu_book</span></span>
+              <div class="test-subject-body">
+                <span class="test-subject-title">Anatomy &amp; Physiology</span>
+                <span class="test-subject-meta">24 tests</span>
+              </div>
+              <span class="material-symbols-outlined test-subject-arrow">chevron_right</span>
+            </a></li>
+            <li><a href="#" class="test-subject-item">
+              <span class="test-subject-icon"><span class="material-symbols-outlined">menu_book</span></span>
+              <div class="test-subject-body">
+                <span class="test-subject-title">Community Health Nursing</span>
+                <span class="test-subject-meta">18 tests</span>
+              </div>
+              <span class="material-symbols-outlined test-subject-arrow">chevron_right</span>
+            </a></li>
+            <li><a href="#" class="test-subject-item">
+              <span class="test-subject-icon"><span class="material-symbols-outlined">menu_book</span></span>
+              <div class="test-subject-body">
+                <span class="test-subject-title">OBG</span>
+                <span class="test-subject-meta">16 tests</span>
+              </div>
+              <span class="material-symbols-outlined test-subject-arrow">chevron_right</span>
+            </a></li>
+            <li><a href="#" class="test-subject-item">
+              <span class="test-subject-icon"><span class="material-symbols-outlined">menu_book</span></span>
+              <div class="test-subject-body">
+                <span class="test-subject-title">Pediatrics</span>
+                <span class="test-subject-meta">14 tests</span>
+              </div>
+              <span class="material-symbols-outlined test-subject-arrow">chevron_right</span>
+            </a></li>
+            <li><a href="#" class="test-subject-item">
+              <span class="test-subject-icon"><span class="material-symbols-outlined">menu_book</span></span>
+              <div class="test-subject-body">
+                <span class="test-subject-title">Medical-Surgical Nursing</span>
+                <span class="test-subject-meta">22 tests</span>
+              </div>
+              <span class="material-symbols-outlined test-subject-arrow">chevron_right</span>
+            </a></li>
+            <li><a href="#" class="test-subject-item">
+              <span class="test-subject-icon"><span class="material-symbols-outlined">menu_book</span></span>
+              <div class="test-subject-body">
+                <span class="test-subject-title">Psychiatric Nursing</span>
+                <span class="test-subject-meta">12 tests</span>
+              </div>
+              <span class="material-symbols-outlined test-subject-arrow">chevron_right</span>
+            </a></li>
+          </ul>
+        </div>
+
+        <!-- Pre Board content (reminder cards: date, In X days, Interested, Reminder Me) -->
+        <div class="test-content-panel test-content-panel--hidden" id="testContentPreboard">
+          <ul class="test-preboard-list">
+            <li class="test-preboard-card">
+              <div class="test-preboard-top">
+                <div class="test-preboard-date">
+                  <span class="test-preboard-day">16</span>
+                  <span class="test-preboard-month">March</span>
+                </div>
+                <div class="test-preboard-main">
+                  <span class="test-preboard-days-tag">In 10 days</span>
+                  <h2 class="test-preboard-title">Short Subject NORCET</h2>
+                  <p class="test-preboard-specs">80 MCQs • 80 Mins • 100 Marks</p>
+                </div>
+              </div>
+              <div class="test-preboard-divider" aria-hidden="true"></div>
+              <div class="test-preboard-footer">
+                <div class="test-preboard-interested">
+                  <span class="test-preboard-avatars">
+                    <img src="images/profile.svg" alt="" /><img src="images/profile.svg" alt="" /><img src="images/profile.svg" alt="" />
+                  </span>
+                  <span>467 Interested</span>
+                </div>
+                <button type="button" class="btn-test-reminder">Reminder Me</button>
+              </div>
+            </li>
+            <li class="test-preboard-card">
+              <div class="test-preboard-top">
+                <div class="test-preboard-date">
+                  <span class="test-preboard-day">21</span>
+                  <span class="test-preboard-month">March</span>
+                </div>
+                <div class="test-preboard-main">
+                  <span class="test-preboard-days-tag">In 21 days</span>
+                  <h2 class="test-preboard-title">Short Subject NORCET</h2>
+                  <p class="test-preboard-specs">80 MCQs • 80 Mins • 100 Marks</p>
+                </div>
+              </div>
+              <div class="test-preboard-divider" aria-hidden="true"></div>
+              <div class="test-preboard-footer">
+                <div class="test-preboard-interested">
+                  <span class="test-preboard-avatars">
+                    <img src="images/profile.svg" alt="" /><img src="images/profile.svg" alt="" /><img src="images/profile.svg" alt="" />
+                  </span>
+                  <span>120 Interested</span>
+                </div>
+                <button type="button" class="btn-test-reminder">Reminder Me</button>
+              </div>
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
   </main>
+
+  <!-- Reel reopen FAB: bottom-right on home, visible after first close; hide with close icon until refresh -->
+  <div class="reels-fab-wrap" id="reelsReopenFab" hidden>
+    <img src="images/reels.png" alt="" class="reels-fab-icon" />
+    <button type="button" class="reels-fab-close" id="reelsFabClose" aria-label="Hide reels icon" title="Hide until refresh">
+      <span class="material-symbols-outlined">close</span>
+    </button>
+  </div>
+
+  <!-- Test page: Select exam bottom sheet (first-time + edit icon) -->
+  <div class="bottom-sheet" id="testExamSheet" aria-hidden="true" aria-label="Select exam">
+    <div class="bottom-sheet-backdrop" id="testExamSheetBackdrop"></div>
+    <div class="bottom-sheet-panel">
+      <div class="bottom-sheet-handle" aria-hidden="true"></div>
+      <div class="bottom-sheet-header">
+        <h3 class="bottom-sheet-title">Select exam</h3>
+        <button type="button" class="bottom-sheet-close" id="testExamSheetClose" aria-label="Close">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="bottom-sheet-body">
+        <p class="bottom-sheet-hint">Choose an exam to see relevant tests.</p>
+        <div id="testExamSheetList"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- More menu bottom sheet (6 thumbnail items, no backdrop) -->
+  <div class="bottom-sheet more-sheet" id="moreSheet" aria-hidden="true" aria-label="More menu">
+    <div class="bottom-sheet-panel">
+      <div class="bottom-sheet-handle" aria-hidden="true"></div>
+      <div class="bottom-sheet-header">
+        <h3 class="bottom-sheet-title">More</h3>
+        <button type="button" class="bottom-sheet-close" id="moreSheetClose" aria-label="Close">
+          <span class="material-symbols-outlined">close</span>
+        </button>
+      </div>
+      <div class="bottom-sheet-body">
+        <div class="more-menu-grid" id="moreMenuGrid">
+          <a href="#" class="more-menu-item">
+            <span class="more-menu-thumb"><img src="images/pyqs.svg" alt="" /></span>
+            <span class="more-menu-label">PYQ's</span>
+          </a>
+          <a href="#" class="more-menu-item">
+            <span class="more-menu-thumb"><img src="images/preboard.svg" alt="" /></span>
+            <span class="more-menu-label">Pre-Board</span>
+          </a>
+          <a href="#" class="more-menu-item">
+            <span class="more-menu-thumb"><img src="images/daily-test.svg" alt="" /></span>
+            <span class="more-menu-label">Daily Test</span>
+          </a>
+          <a href="#" class="more-menu-item">
+            <span class="more-menu-thumb"><img src="images/mini-test.svg" alt="" /></span>
+            <span class="more-menu-label">Mock Test</span>
+          </a>
+          <a href="#" class="more-menu-item">
+            <span class="more-menu-thumb"><img src="images/videos.svg" alt="" /></span>
+            <span class="more-menu-label">Library</span>
+          </a>
+          <a href="#" class="more-menu-item">
+            <span class="more-menu-thumb"><img src="images/profile.svg" alt="" /></span>
+            <span class="more-menu-label">Profile</span>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
 
   <!-- Bottom navigation (Material 3 style with sliding pill) -->
   <nav class="bottom-nav" aria-label="Main" id="bottomNav" style="--active-index: 0">
