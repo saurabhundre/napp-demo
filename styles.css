@@ -2964,9 +2964,9 @@ button:active {
 
 .bottom-sheet-item-body strong {
   display: block;
-  font-size: 0.95rem;
+  font-size: 14px;
+  font-weight: 500;
   color: var(--text);
-  margin-bottom: 2px;
 }
 
 .bottom-sheet-item-body span {
@@ -3047,6 +3047,11 @@ button:active {
 
 .test-exam-item:hover {
   border-color: var(--blue-light);
+}
+
+.test-exam-item-icon {
+  border-radius: 50%;
+  overflow: hidden;
 }
 
 .test-exam-item .bottom-sheet-item-body strong {

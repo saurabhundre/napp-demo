@@ -1257,8 +1257,14 @@ if (bottomNav) {
   const EXAM_STORAGE_KEY = 'exam_home_selected_exam';
   const FIRST_VISIT_STORAGE_KEY = 'exam_home_test_exam_picker_seen';
 
+  const MAJOR_EXAMS = [
+    { value: 'NORCET-PreBoard', label: 'NORCET Pre-Board', logo: 'images/exam-norcet-preb.png' },
+    { value: 'NORCET', label: 'NORCET', logo: 'images/exam-norcet.png' },
+    { value: 'CHO-Exams', label: 'CHO Exams', logo: 'images/exam-cho.png' },
+    { value: 'JIPMER-Nursing', label: 'JIPMER Nursing Officer', logo: 'images/exam-jipmer.png' },
+  ];
+
   const EXAM_OPTIONS = [
-    { value: 'NORCET', label: 'NORCET (Nursing Officer Recruitment Common Eligibility Test)' },
     { value: 'AIIMS-NORCET', label: 'AIIMS NORCET' },
     { value: 'PGIMER-Nursing', label: 'PGIMER Nursing Officer' },
     { value: 'DSSSB-Nursing', label: 'DSSSB Nursing' },
@@ -1272,15 +1278,29 @@ if (bottomNav) {
     { value: 'ANM', label: 'ANM (Auxiliary Nursing Midwifery)' },
   ];
 
-  const MAJOR_EXAMS = EXAM_OPTIONS.slice(0, 5);
   const ALL_EXAMS = EXAM_OPTIONS;
 
+  var EXAM_ICONS = ['images/exam-norcet-preb.png', 'images/exam-norcet.png', 'images/exam-cho.png', 'images/exam-jipmer.png'];
+
+  function shuffleArray(arr) {
+    var a = arr.slice();
+    for (var i = a.length - 1; i > 0; i--) {
+      var j = Math.floor(Math.random() * (i + 1));
+      var t = a[i];
+      a[i] = a[j];
+      a[j] = t;
+    }
+    return a;
+  }
+
   const EXAM_LABELS = {};
+  MAJOR_EXAMS.forEach(function (o) {
+    EXAM_LABELS[o.value] = o.label;
+  });
   EXAM_OPTIONS.forEach(function (o) {
     EXAM_LABELS[o.value] = o.label.split(' (')[0].trim();
   });
   EXAM_LABELS['AIIMS-NORCET'] = 'AIIMS NORCET';
-  EXAM_LABELS['NORCET'] = 'NORCET';
 
   const sheet = document.getElementById('testExamSheet');
   const sheetBackdrop = document.getElementById('testExamSheetBackdrop');
@@ -1306,8 +1326,13 @@ if (bottomNav) {
   }
 
   function renderItem(o, selected) {
+    var logo = o.logo || o._icon;
     var selectedClass = o.value === selected ? ' test-exam-item--selected' : '';
+    var iconHtml = logo
+      ? '<span class="bottom-sheet-item-icon test-exam-item-icon"><img src="' + logo + '" alt="" /></span>'
+      : '';
     return '<li class="bottom-sheet-item test-exam-item' + selectedClass + '" data-exam-value="' + o.value + '" role="button" tabindex="0">' +
+      iconHtml +
       '<div class="bottom-sheet-item-body">' +
       '<strong>' + (o.label || o.value) + '</strong>' +
       '</div>' +
@@ -1317,6 +1342,10 @@ if (bottomNav) {
 
   function renderList() {
     var selected = getSelectedExam();
+    var shuffledIcons = shuffleArray(EXAM_ICONS);
+    var allWithIcons = ALL_EXAMS.map(function (o, i) {
+      return Object.assign({}, o, { _icon: shuffledIcons[i % shuffledIcons.length] });
+    });
     sheetListEl.innerHTML =
       '<div class="test-exam-group">' +
         '<h4 class="test-exam-group-title">Major Exams</h4>' +
@@ -1327,7 +1356,7 @@ if (bottomNav) {
       '<div class="test-exam-group">' +
         '<h4 class="test-exam-group-title">All Exams</h4>' +
         '<ul class="bottom-sheet-list">' +
-          ALL_EXAMS.map(function (o) { return renderItem(o, selected); }).join('') +
+          allWithIcons.map(function (o) { return renderItem(o, selected); }).join('') +
         '</ul>' +
       '</div>';
   }
